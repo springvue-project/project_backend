@@ -18,6 +18,7 @@ import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
 
+
 @RestController
 @RequestMapping("/map")
 @CrossOrigin("*")

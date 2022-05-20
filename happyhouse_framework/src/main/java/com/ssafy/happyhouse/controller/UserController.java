@@ -1,10 +1,11 @@
 package com.ssafy.happyhouse.controller;
 
 import java.time.LocalDate;
-
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +32,12 @@ import com.ssafy.happyhouse.model.ModifyPwdDto;
 import com.ssafy.happyhouse.model.UserDto;
 import com.ssafy.happyhouse.model.service.UserService;
 
+import io.swagger.annotations.ApiParam;
+
+import com.ssafy.happyhouse.model.UserDto;
+import com.ssafy.happyhouse.model.service.JwtServiceImpl;
+import com.ssafy.happyhouse.model.service.UserService;
+
 @Controller
 @CrossOrigin("*")
 @RequestMapping("/user")
@@ -40,6 +47,9 @@ public class UserController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
+	@Autowired
+	private JwtServiceImpl jwtService;
+	
 	@Autowired
 	private UserService userService;
 
@@ -106,27 +116,57 @@ public class UserController {
 
 	// 로그인
 	@PostMapping("/login")
-	public @ResponseBody String login(@RequestBody UserDto userDto, HttpSession session,
-			HttpServletResponse response) throws Exception {
-		logger.debug("map : {}", userDto);
-		UserDto UserDto = userService.login(userDto);
-		if (UserDto != null) {
-			session.setAttribute("userInfo", UserDto);
-
-//			Cookie cookie = new Cookie("ssafy_id", userDto.getUserId());
-//			cookie.setPath("/");
-//			if ("true".equals(map.get("idsave"))) {
-//				cookie.setMaxAge(60 * 60 * 24 * 365 * 40);
-//			} else {
-//				cookie.setMaxAge(0);
-//			}
-//			response.addCookie(cookie);
-			return SUCCESS;
-		} else {			
-			return FAIL;
+	public ResponseEntity<Map<String, Object>> login(
+			@RequestBody UserDto userDto){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			UserDto loginUser = userService.login(userDto);
+			if(loginUser != null) {
+				String token = jwtService.create("userid", loginUser.getUserId(), "access-token");// key, data, subject
+				logger.debug("로그인 토큰정보 : {}", token);
+				resultMap.put("access-token", token);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		}catch (Exception e) {
+			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	// 회원 인증
+	@GetMapping("/info/{userid}")
+	public ResponseEntity<Map<String, Object>> getInfo(
+			@PathVariable("userid") String userid,
+			HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		if (jwtService.isUsable(request.getHeader("access-token"))) {
+			logger.info("사용 가능한 토큰!!!");
+			try {
+				UserDto userDto = userService.searchById(userid);
+				resultMap.put("userInfo", userDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}catch (Exception e) {
+				logger.error("정보조회 실패: {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		}else {
+			logger.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.ACCEPTED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	// 회원 삭제
 	@DeleteMapping(value = "/delete/{userId}")
 	public @ResponseBody String userDelete(@PathVariable String userId, HttpSession session) throws Exception {
