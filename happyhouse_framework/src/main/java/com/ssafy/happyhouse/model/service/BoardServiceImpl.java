@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.happyhouse.model.Board;
+import com.ssafy.happyhouse.model.CommentDto;
 import com.ssafy.happyhouse.model.mapper.BoardMapper;
 
 @Service
@@ -41,5 +42,15 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	public boolean deleteBoard(int articleno) {
 		return boardMapper.deleteBoard(articleno) == 1;
+	}
+
+	@Override
+	public boolean updataHit(int articleno) {
+		return boardMapper.updateHit(articleno)==1;
+	}
+
+	@Override
+	public List<CommentDto> retrieveComment(int articleno) {
+		return boardMapper.selectComment(articleno);
 	}
 }

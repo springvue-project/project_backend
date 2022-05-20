@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.CommentMapper">
+
+
+	<!-- 댓글 조회 -->
+	<select id="selectComment" resultType="commentDto">
+		select  articleno, writer, content, regtime
+		from comment
+		where articleno = #{articleno}
+	</select>
+
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertComment" parameterType="commentDto">
+		insert into comment(
+			articleno, writer, content, regtime
+		)values(
+			#{articleno}, #{writer}, #{content}, now()
+		)
+	</insert>
+	
+	<!-- 댓글 수정 -->
+<!-- 	<update id="updateComment" parameterType="board">
+		update board 
+		   set subject = #{subject}, 
+		   	   userid = #{userid}, 
+		   	   content = #{content}
+		 where articleno = #{articleno}
+	</update> -->
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		delete 
+		from comment 
+		where no = #{commentno}
+	</delete>
+
+</mapper>
+

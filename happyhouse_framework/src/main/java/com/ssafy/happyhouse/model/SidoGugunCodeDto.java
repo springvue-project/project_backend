@@ -6,6 +6,24 @@ public class SidoGugunCodeDto {
 	private String sidoName;
 	private String gugunCode;
 	private String gugunName;
+	private String dongCode;
+	private String dongName;
+
+	public String getDongCode() {
+		return dongCode;
+	}
+
+	public void setDongCode(String dongCode) {
+		this.dongCode = dongCode;
+	}
+
+	public String getDongName() {
+		return dongName;
+	}
+
+	public void setDongName(String dongName) {
+		this.dongName = dongName;
+	}
 
 	public String getSidoCode() {
 		return sidoCode;

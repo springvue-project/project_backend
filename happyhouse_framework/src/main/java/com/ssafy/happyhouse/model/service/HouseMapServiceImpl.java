@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.happyhouse.model.ApartDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
@@ -14,135 +15,139 @@ import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
 @Service
 public class HouseMapServiceImpl implements HouseMapService {
 
-   @Autowired
-   private HouseMapMapper houseMapMapper;
+	@Autowired
+	private HouseMapMapper houseMapMapper;
 
-   @Override
-   public List<SidoGugunCodeDto> getSido() throws Exception {
-      return houseMapMapper.getSido();
-   }
+	@Override
+	public List<SidoGugunCodeDto> getSido() throws Exception {
+		return houseMapMapper.getSido();
+	}
 
-   @Override
-   public List<SidoGugunCodeDto> getGugunInSido(String sido) throws Exception {
-      return houseMapMapper.getGugunInSido(sido);
-   }
+	@Override
+	public List<SidoGugunCodeDto> getGugunInSido(String sido) throws Exception {
+		return houseMapMapper.getGugunInSido(sido);
+	}
 
-   @Override
-   public List<HouseInfoDto> getDongInGugun(String gugun) throws Exception {
-      return houseMapMapper.getDongInGugun(gugun);
-   }
+	@Override
+	public List<SidoGugunCodeDto> getDongInGugun(String gugun) throws Exception {
+		return houseMapMapper.getDongInGugun(gugun);
+	}
 
-   // 밑에 오버라이드 2개 작업 끝나면 지워도 됨
-   @Override
-   public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
-      // 현재 동 코드 기준으로 해당 동의 위도, 경도 좌표를 읽어들임 
-      // select lat, lng from baseaddress where dongcode = dong
-      //double[2] xy = houseMapper.getxy(dong);
+	// 밑에 오버라이드 2개 작업 끝나면 지워도 됨
+	@Override
+	public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
+		// 현재 동 코드 기준으로 해당 동의 위도, 경도 좌표를 읽어들임
+		// select lat, lng from baseaddress where dongcode = dong
+		// double[2] xy = houseMapper.getxy(dong);
 
-      List<HouseInfoDto> list = null;
-      list = houseMapMapper.getAptInDong(dong);
-      System.out.println(list.toString());
-      // 
-      return list;
-   }
+		List<HouseInfoDto> list = null;
+		list = houseMapMapper.getAptInDong(dong);
+		System.out.println(list.toString());
+		//
+		return list;
+	}
 
+	@Override
+	public List<HouseInfoDto> getAptInDongSortDistance(String dong, int type) throws Exception {
+		PriorityQueue<distanceWithDto> pq = new PriorityQueue<>();
+		List<HouseInfoDto> list = null;
+		list = houseMapMapper.getAptInDong(dong);
+		System.out.println(list.size());
+		if (type == 1) {
+			return list;
+		} else {
+			// 베이스 (기준위치의 위도 ,겨오=뎌
+			double baseaddress_lng = 0;
+			double baseaddress_lat = 0;
+			double destination_lng = 0;
+			double destination_lat = 0;
+			double distance = 0;
 
-   @Override
-   public List<HouseInfoDto> getAptInDongSortDistance(String dong, int type) throws Exception {
-      PriorityQueue<distanceWithDto> pq = new PriorityQueue<>();
-      List<HouseInfoDto> list = null;
-      list = houseMapMapper.getAptInDong(dong);
-      System.out.println(list.size());
-      if(type == 1) {
-         return list;
-      }else {
-         //베이스 (기준위치의 위도 ,겨오=뎌
-         double baseaddress_lng = 0;
-         double baseaddress_lat = 0;
-         double destination_lng = 0;
-         double destination_lat = 0;
-         double distance = 0;
+			baseaddress_lng = Double.parseDouble(houseMapMapper.getlatlng(dong).get("lng"));
+			baseaddress_lat = Double.parseDouble(houseMapMapper.getlatlng(dong).get("lat"));
 
-         baseaddress_lng = Double.parseDouble(houseMapMapper.getlatlng(dong).get("lng"));
-         baseaddress_lat = Double.parseDouble(houseMapMapper.getlatlng(dong).get("lat"));
+			System.out.println(baseaddress_lng);
+			System.out.println(baseaddress_lat);
+			System.out.println(destination_lng);
+			System.out.println(destination_lng);
 
+			for (int i = 0; i < list.size(); i++) {
+				destination_lng = Double.parseDouble(list.get(i).getLng());
+				destination_lat = Double.parseDouble(list.get(i).getLat());
 
-         System.out.println(baseaddress_lng);
-         System.out.println(baseaddress_lat);
-         System.out.println(destination_lng);
-         System.out.println(destination_lng);
+				distance = distance(baseaddress_lat, baseaddress_lng, destination_lat, destination_lng, "kilometer");
 
-         for(int i=0; i<list.size(); i++) {
-            destination_lng = Double.parseDouble(list.get(i).getLng());
-            destination_lat = Double.parseDouble(list.get(i).getLat());   
+				pq.add(new distanceWithDto(distance, list.get(i)));
+			}
 
-            distance = distance(baseaddress_lat, baseaddress_lng, destination_lat, destination_lng,"kilometer");
+			list.clear();
 
-            pq.add(new distanceWithDto(distance, list.get(i)));
-         }
+			int cycle = pq.size();
+			for (int i = 0; i < cycle; i++) {
+				list.add(pq.poll().dto);
+			}
 
-         list.clear();
+			System.out.println(list.toString());
+			return list;
+		}
+	}
 
-         int cycle = pq.size();
-         for(int i=0; i<cycle; i++) {
-            list.add(pq.poll().dto);
-         }
+	@Override
+	public Map<String, String> getlatlng(String dong) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, String> map = houseMapMapper.getlatlng(dong);
+		System.out.println(map);
+		return houseMapMapper.getlatlng(dong);
+	}
 
-         System.out.println(list.toString());
-         return list;
-      }
-   }
+	public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 
-   @Override
-   public Map<String, String> getlatlng(String dong) throws Exception {
-      // TODO Auto-generated method stub
-      Map<String, String> map = houseMapMapper.getlatlng(dong);
-      System.out.println(map);
-      return houseMapMapper.getlatlng(dong);
-   }
+		double theta = lon1 - lon2;
+		double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2))
+				+ Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
 
-   public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+		dist = Math.acos(dist);
+		dist = rad2deg(dist);
+		dist = dist * 60 * 1.1515;
 
-      double theta = lon1 - lon2;
-      double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+		if (unit == "kilometer") {
+			dist = dist * 1.609344;
+		} else if (unit == "meter") {
+			dist = dist * 1609.344;
+		}
 
-      dist = Math.acos(dist);
-      dist = rad2deg(dist);
-      dist = dist * 60 * 1.1515;
+		return (dist);
+	}
 
-      if (unit == "kilometer") {
-         dist = dist * 1.609344;
-      } else if(unit == "meter"){
-         dist = dist * 1609.344;
-      }
+	// This function converts decimal degrees to radians
+	public static double deg2rad(double deg) {
+		return (deg * Math.PI / 180.0);
+	}
 
-      return (dist);
-   }
+	// This function converts radians to decimal degrees
+	public static double rad2deg(double rad) {
+		return (rad * 180 / Math.PI);
+	}
 
-
-   // This function converts decimal degrees to radians
-   public static double deg2rad(double deg) {
-      return (deg * Math.PI / 180.0);
-   }
-
-   // This function converts radians to decimal degrees
-   public static double rad2deg(double rad) {
-      return (rad * 180 / Math.PI);
-   }
+	@Override
+	public List<ApartDto> getAptDeal(String aptCode) throws Exception {
+		return houseMapMapper.getAptDeal(aptCode);
+	}
 
 }
-class distanceWithDto implements Comparable<distanceWithDto>{
-   double distance;
-   HouseInfoDto dto;
 
-   public distanceWithDto(double distance, HouseInfoDto dto) {
-      super();
-      this.distance = distance;
-      this.dto = dto;
-   }
+class distanceWithDto implements Comparable<distanceWithDto> {
+	double distance;
+	HouseInfoDto dto;
 
-   @Override
-   public int compareTo(distanceWithDto o) {
-      return (int) (this.distance-o.distance);
-   }
+	public distanceWithDto(double distance, HouseInfoDto dto) {
+		super();
+		this.distance = distance;
+		this.dto = dto;
+	}
+	
+	@Override
+	public int compareTo(distanceWithDto o) {
+		return (int) (this.distance - o.distance);
+	}
 }
