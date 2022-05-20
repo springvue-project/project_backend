@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class AnnounceDto {
 	@ApiModelProperty(value = "글번호")
 	private int no;
+	@ApiModelProperty(value = "작성자아이디")
+	private String userid;
 	@ApiModelProperty(value = "제목")
 	private String subject;
 	@ApiModelProperty(value = "내용")
@@ -17,15 +19,21 @@ public class AnnounceDto {
 	
 	@Override
 	public String toString() {
-		return "AnnounceDto [no=" + no + ", subject=" + subject + ", content=" + content + ", hit=" + hit + ", regtime="
-				+ regtime + "]";
+		return "AnnounceDto [no=" + no + ", userid=" + userid + ", subject=" + subject + ", content=" + content
+				+ ", hit=" + hit + ", regtime=" + regtime + "]";
 	}
-	
 	public int getNo() {
 		return no;
 	}
 	public void setNo(int no) {
 		this.no = no;
+	}
+	public String getUserid() {
+		return userid;
+	}
+	
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 	public String getSubject() {
 		return subject;
