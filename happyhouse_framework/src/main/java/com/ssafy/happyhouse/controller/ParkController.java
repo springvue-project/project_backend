@@ -28,7 +28,6 @@ public class ParkController {
 	@GetMapping("/dong")
 	public ResponseEntity<List<ParkDto>> parkFromDong(@RequestParam("dong") String dong) throws Exception {
 		List<ParkDto> list = parkServiceImpl.parkFromDong(dong);
-		System.out.println("ewfawefwaefawefawefa");
 		System.out.println("리스트!!!!" + list);
 		return new ResponseEntity<List<ParkDto>>(list, HttpStatus.OK);
 	}
