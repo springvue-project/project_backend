@@ -25,7 +25,7 @@ import com.ssafy.happyhouse.model.service.HouseMapService;
 public class HouseMapController {
    
    private final Logger logger = LoggerFactory.getLogger(HouseMapController.class);
-
+	//Controller
    @Autowired
    private HouseMapService haHouseMapService;
    
