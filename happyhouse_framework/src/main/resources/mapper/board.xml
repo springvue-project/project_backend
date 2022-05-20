@@ -42,6 +42,21 @@
 		from board 
 		where articleno = #{articleno}
 	</delete>
+	
+	
+	<!-- 조회수 증가 -->
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where articleno = #{no}
+	</update>
+	
+	<!-- 댓글 조회 -->
+	<select id="selectComment" parameterType="int">
+		select  writer, content, regtime
+		from comment
+		where articleno = #{articleno}
+	</select>
 
 </mapper>
 

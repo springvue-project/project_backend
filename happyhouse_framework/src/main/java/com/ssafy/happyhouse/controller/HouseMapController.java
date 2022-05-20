@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.ApartDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
@@ -41,8 +42,8 @@ public class HouseMapController {
    }
    
    @GetMapping("/dong")
-   public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
-      return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
+   public ResponseEntity<List<SidoGugunCodeDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
+      return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
    }
    
    @GetMapping("/apt")
@@ -50,6 +51,12 @@ public class HouseMapController {
       haHouseMapService.getlatlng(dong);
       return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(dong), HttpStatus.OK);
    }
+   
+   @GetMapping("/aptdeal")
+   public ResponseEntity<List<ApartDto>> aptdeal(@RequestParam("aptCode") String aptCode) throws Exception {
+      return new ResponseEntity<List<ApartDto>>(haHouseMapService.getAptDeal(aptCode), HttpStatus.OK);
+   }
+   
 
    @GetMapping("/type")
    public ResponseEntity<List<HouseInfoDto>> aptsort(@RequestParam("dong") String dong, @RequestParam("type") int type) throws Exception {

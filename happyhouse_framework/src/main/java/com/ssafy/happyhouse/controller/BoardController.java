@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.model.Board;
+import com.ssafy.happyhouse.model.CommentDto;
 import com.ssafy.happyhouse.model.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,7 @@ public class BoardController {
 	@GetMapping("{articleno}")
 	public ResponseEntity<Board> detailBoard(@PathVariable int articleno) {
 		logger.debug("detailBoard - 호출");
+		boardService.updataHit(articleno);
 		return new ResponseEntity<Board>(boardService.detailBoard(articleno), HttpStatus.OK);
 	}
 
@@ -80,4 +82,7 @@ public class BoardController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+    
+    
+    
 }
