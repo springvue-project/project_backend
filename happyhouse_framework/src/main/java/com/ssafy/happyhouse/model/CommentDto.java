@@ -1,7 +1,7 @@
 package com.ssafy.happyhouse.model;
 
 public class CommentDto {
-//	private int no;
+	private int no;
 	private int articleno;
 	private String writer;
 	private String content;
@@ -9,12 +9,12 @@ public class CommentDto {
 	
 
 	
-//	public int getNo() {
-//		return no;
-//	}
-//	public void setNo(int no) {
-//		this.no = no;
-//	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
 	public int getArticleno() {
 		return articleno;
 	}

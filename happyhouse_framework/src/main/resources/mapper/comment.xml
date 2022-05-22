@@ -7,7 +7,7 @@
 
 	<!-- 댓글 조회 -->
 	<select id="selectComment" resultType="commentDto">
-		select  articleno, writer, content, regtime
+		select  no, articleno, writer, content, regtime
 		from comment
 		where articleno = #{articleno}
 	</select>

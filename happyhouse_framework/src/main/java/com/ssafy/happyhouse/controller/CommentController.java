@@ -41,6 +41,7 @@ public class CommentController {
 	@GetMapping("{articleno}")
 	public ResponseEntity<List<CommentDto>> retrieveComment(@PathVariable int articleno) throws Exception {
 		logger.debug("retrieveComment - 호출");
+		System.out.println("댓글 반환!!!!");
 		return new ResponseEntity<List<CommentDto>>(comService.retrieveComment(articleno), HttpStatus.OK);
 	}
 
