@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.ApartDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.LatLngParamDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
 
@@ -46,6 +48,13 @@ public class HouseMapServiceImpl implements HouseMapService {
 		//
 		return list;
 	}
+	
+	@Override
+	public List<HouseInfoDto> searchBestApt(LatLngParamDto latlng) throws SQLException {
+		return houseMapMapper.searchBestApt(latlng);
+	}
+
+	
 
 	@Override
 	public List<HouseInfoDto> getAptInDongSortDistance(String dong, int type) throws Exception {
@@ -145,7 +154,7 @@ class distanceWithDto implements Comparable<distanceWithDto> {
 		this.distance = distance;
 		this.dto = dto;
 	}
-	
+
 	@Override
 	public int compareTo(distanceWithDto o) {
 		return (int) (this.distance - o.distance);
