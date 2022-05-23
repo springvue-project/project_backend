@@ -11,6 +11,7 @@ import com.ssafy.happyhouse.model.AnnounceDto;
 @Mapper
 public interface AnnounceMapper {
 	public List<AnnounceDto> selectAll();
+	public List<AnnounceDto> selectLast();
 	public AnnounceDto selectByNo(int no);
 	public int insert(AnnounceDto announceDto);
 	public int update(AnnounceDto announceDto);

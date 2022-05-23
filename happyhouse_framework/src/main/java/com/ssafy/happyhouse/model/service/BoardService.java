@@ -8,6 +8,7 @@ import com.ssafy.happyhouse.model.CommentDto;
 
 public interface BoardService {
 	public List<Board> retrieveBoard();
+	public List<Board> topBoard();
 	public Board detailBoard(int articleno);
 	public boolean writeBoard(Board board);
 	public boolean updateBoard(Board board);

@@ -42,6 +42,13 @@ public class BoardController {
 		logger.debug("retrieveBoard - 호출");
 		return new ResponseEntity<List<Board>>(boardService.retrieveBoard(), HttpStatus.OK);
 	}
+    
+    @ApiOperation(value = "조회수가 높은 3개의 게시글의 정보를 반환한다.", response = List.class)
+	@GetMapping("/top")
+	public ResponseEntity<List<Board>> topBoard() throws Exception {
+		logger.debug("retrieveBoard - 호출");
+		return new ResponseEntity<List<Board>>(boardService.topBoard(), HttpStatus.OK);
+	}
 
     @ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = Board.class)    
 	@GetMapping("{articleno}")

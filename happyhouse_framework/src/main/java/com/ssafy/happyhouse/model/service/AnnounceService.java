@@ -6,6 +6,7 @@ import com.ssafy.happyhouse.model.AnnounceDto;
 
 public interface AnnounceService {
 	public List<AnnounceDto> list();
+	public List<AnnounceDto> listlast();
 	public AnnounceDto detail(int no);
 	public boolean insert(AnnounceDto announceDto);
 	public boolean update(AnnounceDto announceDto);

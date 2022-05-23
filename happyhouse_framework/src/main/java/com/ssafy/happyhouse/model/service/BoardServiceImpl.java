@@ -22,6 +22,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.selectBoard();
 	}
     
+	@Override
+	public List<Board> topBoard() {
+		return boardMapper.selecttopBoard();
+	}
+    
   	@Override
 	public boolean writeBoard(Board board) {
 		return boardMapper.insertBoard(board) == 1;
@@ -53,4 +58,6 @@ public class BoardServiceImpl implements BoardService {
 	public List<CommentDto> retrieveComment(int articleno) {
 		return boardMapper.selectComment(articleno);
 	}
+
+
 }
