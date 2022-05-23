@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.ssafy.happyhouse.model.ApartDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.LatLngParamDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 
 public interface HouseMapMapper {
@@ -19,4 +20,5 @@ public interface HouseMapMapper {
 	
 	// housedeal 
 	List<ApartDto> getAptDeal(String aptCode) throws SQLException;
+	List<HouseInfoDto> searchBestApt(LatLngParamDto latlng) throws SQLException;
 }
