@@ -10,6 +10,7 @@ import com.ssafy.happyhouse.model.CommentDto;
 @Mapper
 public interface BoardMapper {
 	public List<Board> selectBoard();
+	public List<Board> selecttopBoard();
 	public Board selectBoardByNo(int articleno);
 	public int insertBoard(Board board);
 	public int updateBoard(Board board);

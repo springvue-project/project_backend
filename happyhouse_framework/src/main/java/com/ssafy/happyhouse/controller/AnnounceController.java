@@ -42,6 +42,13 @@ public class AnnounceController {
 		logger.debug("retrieveAnnounce - 호출");
 		return new ResponseEntity<List<AnnounceDto>>(announceService.list(), HttpStatus.OK);
 	}
+    
+    @ApiOperation(value = "최근 공지사항 3개의 정보를 반환한다.", response = List.class)
+	@GetMapping("/last")
+	public ResponseEntity<List<AnnounceDto>> lastAnnounce() throws Exception {
+		logger.debug("retrieveAnnounce - 호출");
+		return new ResponseEntity<List<AnnounceDto>>(announceService.listlast(), HttpStatus.OK);
+	}
 
     @ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = AnnounceDto.class)    
 	@GetMapping("{no}")

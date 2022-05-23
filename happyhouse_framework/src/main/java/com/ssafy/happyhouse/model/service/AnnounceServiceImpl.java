@@ -22,6 +22,11 @@ public class AnnounceServiceImpl implements AnnounceService {
 	public List<AnnounceDto> list() {
 		return announceMapper.selectAll();
 	}
+	
+	@Override
+	public List<AnnounceDto> listlast() {
+		return announceMapper.selectLast();
+	}
 
 	@Override
 	public AnnounceDto detail(int no) {
@@ -51,6 +56,8 @@ public class AnnounceServiceImpl implements AnnounceService {
 	public boolean updateHit(int no) {
 		return announceMapper.updateHit(no)==1;
 	}
+
+	
 
 
 }
