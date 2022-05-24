@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ssafy.happyhouse.model.MemberDto;
 
 @Controller
-@RequestMapping("/apart")
+@RequestMapping("/search")
 public class ApartController {
 	
 	 @RequestMapping(value="/")

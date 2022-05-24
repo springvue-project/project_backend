@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.model.ApartDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.LatLngParamDto;
+import com.ssafy.happyhouse.model.ParamsForSearchAptDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
 
@@ -73,4 +74,5 @@ public class HouseMapController {
 		LatLngParamDto latlng = new LatLngParamDto(lat, lng, "1");
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.searchBestApt(latlng),HttpStatus.OK);
 	}
+	
 }
