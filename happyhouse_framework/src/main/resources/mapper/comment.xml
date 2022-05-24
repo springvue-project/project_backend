@@ -10,6 +10,7 @@
 		select  no, articleno, writer, content, regtime
 		from comment
 		where articleno = #{articleno}
+		order by regtime desc
 	</select>
 
 	
