@@ -25,4 +25,5 @@ public interface UserService {
 	String searchPwdById(String userId) throws Exception;
 	// 비번 변경
 	int modifyPwd(ModifyPwdDto modifyPwdDto) throws Exception;
+
 }

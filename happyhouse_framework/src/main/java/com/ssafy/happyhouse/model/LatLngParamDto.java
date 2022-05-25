@@ -5,8 +5,17 @@ public class LatLngParamDto {
 	private String lat;
 	private String lng;
 	private String distance;
+	private String sidoName;
 
 	
+	public String getSidoName() {
+		return sidoName;
+	}
+
+	public void setSidoName(String sidoName) {
+		this.sidoName = sidoName;
+	}
+
 	public LatLngParamDto() {
 	}
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.InterestMapper">
+
+	<insert id="insertInterest" parameterType="InterestDto">
+		insert into userInterest(userId, aptCode) values (#{userid},#{aptCode})
+	</insert>
+	
+	
+	<select id="deleteInterest" parameterType="InterestDto" >
+		delete from userInterest where userid = #{userid} and aptCode = #{aptCode}
+	</select>
+	
+	<select id="searchById" parameterType="string" resultType="HouseinfoDto">
+	     select  h.aptCode, h.apartmentName, h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,h.roadName,
+        (select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+        from houseinfo h
+        left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where h.aptCode in (select aptCode from userInterest where userid = #{userid});
+	</select>
+	
+		
+	<select id="searchApt" parameterType="InterestDto" resultType="int" >
+	  select count(*) from userInterest where userid = #{userid} and aptCode = #{aptCode};
+	</select>
+
+	
+</mapper>

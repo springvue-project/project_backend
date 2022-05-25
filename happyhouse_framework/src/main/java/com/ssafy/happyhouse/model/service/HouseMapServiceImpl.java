@@ -86,7 +86,9 @@ public class HouseMapServiceImpl implements HouseMapService {
 
 				distance = distance(baseaddress_lat, baseaddress_lng, destination_lat, destination_lng, "kilometer");
 
-				pq.add(new distanceWithDto(distance, list.get(i)));
+					pq.add(new distanceWithDto(distance, list.get(i)));	
+				
+				
 			}
 
 			list.clear();
@@ -111,10 +113,16 @@ public class HouseMapServiceImpl implements HouseMapService {
 
 	public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 
+		//(6371*acos(cos(radians(35.16811904894569))*cos(radians(lat))*cos(radians(lng)-radians(129.0662563831067))
+		//  +sin(radians(35.16811904894569))*sin(radians(lat))))
+		
 		double theta = lon1 - lon2;
 		double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2))
 				+ Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
+		
+//		double dist = 6371 * Math.acos(Math.cos(deg2rad(lat1))*Math.cos(deg2rad(lat2))*Math.cos(deg2rad(lon2)-deg2rad(lon1))
+//				+Math.sin(deg2rad(lat1))*Math.sin(deg2rad(lat2)));
+		
 		dist = Math.acos(dist);
 		dist = rad2deg(dist);
 		dist = dist * 60 * 1.1515;
