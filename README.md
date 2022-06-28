@@ -3,7 +3,7 @@
 
 ## 프로젝트 개요
 
-- 전국 아파트별 매매 정보(2015 ~ 2022)를 조회하고    
+:heavy_check_mark:전국 아파트별 매매 정보(2015 ~ 2022)를 조회하고    
 아파트별 주변 상권(부동산,주유소, 카페)정보와 전국 동별 주차장 정보를 제공합니다.
 
 ## 개발 환경
@@ -65,6 +65,3 @@
 - 댓글 등록/삭제
 <img src="https://user-images.githubusercontent.com/73818604/176245599-7aae5be0-772d-452e-9095-ad1596d86968.png" width="700">
 
-## 개발 일정
-<img src="https://user-images.githubusercontent.com/73818604/176245227-35f10ed4-bfe9-4d8f-84ab-6d4d3dba64d0.png" width="700">
-<img src="https://user-images.githubusercontent.com/73818604/176245234-848a620c-d119-4663-b054-b971d96f9753.jpg"  width="700">
